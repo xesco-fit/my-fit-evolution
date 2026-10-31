@@ -1,0 +1,22 @@
+MY FIT EVOLUTION — versión 1.0
+
+Incluye:
+- Perfil configurado: 88 kg iniciales, 75 kg objetivo, 178 cm, 5 días/semana.
+- Registro de peso y gráfico.
+- Registro de entrenamientos (trail, caminata, running, calistenia, gimnasio, natación, ciclismo y otros).
+- Registro de cintura, abdomen, pecho y cadera.
+- Resumen semanal, historial y análisis básico.
+- Exportación e importación de copia JSON.
+- Almacenamiento local en el navegador.
+
+PARA PROBAR:
+Abre index.html en un navegador moderno.
+
+PARA INSTALAR EN IPHONE:
+La instalación PWA requiere alojar esta carpeta en un sitio HTTPS.
+1. Publica los archivos en un hosting estático HTTPS (por ejemplo, un repositorio Pages).
+2. Abre la URL en Safari en el iPhone.
+3. Pulsa Compartir > Añadir a pantalla de inicio.
+
+IMPORTANTE:
+Los datos se guardan en el almacenamiento local del navegador/dispositivo. Exporta periódicamente una copia JSON. La primera versión no sincroniza datos entre dispositivos y no integra Apple Health.

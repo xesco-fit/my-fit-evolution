@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#172b3b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="My Fit Evolution">
+<link rel="manifest" href="manifest.json">
+<title>My Fit Evolution</title>
+<style>
+:root{--navy:#172b3b;--blue:#294357;--mint:#8bd5b0;--bg:#f3f6f7;--card:#fff;--ink:#182630;--muted:#687984;--line:#e3e9ec;--accent:#267b60}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:82px}
+header{background:var(--navy);color:white;padding:calc(18px + env(safe-area-inset-top)) 18px 20px;border-radius:0 0 22px 22px}
+.brand{display:flex;justify-content:space-between;align-items:center;font-weight:800;letter-spacing:.04em;font-size:17px}.sub{color:#b9cbd8;font-size:11px;letter-spacing:.12em;margin-top:20px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.metric{background:var(--blue);border-radius:14px;padding:13px}.metric small{color:#c5d5df}.metric strong{display:block;font-size:27px;margin:5px 0}.metric span{color:#b9cbd8;font-size:11px}
+main{padding:16px;max-width:720px;margin:auto}.section{display:none}.section.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:13px;box-shadow:0 2px 8px #12253608}
+h2{font-size:19px;margin:4px 0 14px}h3{font-size:15px;margin:0 0 12px}.muted{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f4f7f8;border-radius:12px;padding:12px}.stat b{display:block;font-size:21px;margin-top:4px}
+label{display:block;font-size:12px;font-weight:650;color:#52636d;margin:11px 0 5px}input,select,textarea{width:100%;padding:12px;border:1px solid #d7e0e4;border-radius:10px;background:white;font:inherit;color:var(--ink)}button{border:0;border-radius:11px;padding:12px 15px;font-weight:700;font-size:14px;background:var(--navy);color:white;cursor:pointer}.btn2{background:#eaf2ee;color:#205d48}.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.btnrow button{flex:1}.tabs{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--line);padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:5}.tabs button{background:transparent;color:#667780;padding:7px 5px;font-size:11px;flex:1}.tabs button.active{color:var(--accent)}.tabs span{display:block;font-size:19px;margin-bottom:3px}
+.progress{height:9px;background:#e6ecee;border-radius:20px;overflow:hidden;margin:9px 0}.progress i{display:block;height:100%;background:var(--accent);width:0}
+.entry{border-bottom:1px solid var(--line);padding:10px 0}.entry:last-child{border:0}.entry b{display:block}.entry small{color:var(--muted)}.empty{color:var(--muted);font-size:13px;padding:10px 0}
+canvas{width:100%;height:190px;display:block}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:10px}
+@media(min-width:600px){.hero{max-width:520px}.tabs{left:50%;transform:translateX(-50%);max-width:720px;border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><span>MY FIT EVOLUTION</span><span aria-hidden="true">◉</span></div>
+ <div class="sub">TU PROGRESO, DÍA A DÍA</div>
+ <div class="hero">
+  <div class="metric"><small>Peso actual</small><strong id="headerWeight">88,0 kg</strong><span id="weightChange">Punto de partida</span></div>
+  <div class="metric"><small>Objetivo</small><strong id="headerGoal">75 kg</strong><span id="remaining">13 kg por recorrer</span></div>
+ </div>
+</header>
+<main>
+<section id="home" class="section active">
+ <div class="card">
+  <h2>Resumen personal</h2>
+  <div class="grid">
+   <div class="stat"><span class="muted">Peso perdido</span><b id="lost">0,0 kg</b></div>
+   <div class="stat"><span class="muted">Progreso al objetivo</span><b id="progressPct">0 %</b></div>
+   <div class="stat"><span class="muted">Sesiones registradas</span><b id="sessions">0</b></div>
+   <div class="stat"><span class="muted">Actividad total</span><b id="minutes">0 min</b></div>
+  </div>
+  <div class="progress"><i id="progressBar"></i></div>
+  <p class="muted" id="goalText">Objetivo: reducir 13 kg desde el peso inicial.</p>
+ </div>
+ <div class="card"><h3>Actividad de los últimos 7 días</h3><div class="grid">
+  <div class="stat"><span class="muted">Entrenamientos</span><b id="weekSessions">0</b></div>
+  <div class="stat"><span class="muted">Tiempo activo</span><b id="weekMinutes">0 min</b></div>
+ </div></div>
+ <div class="card"><h3>Últimos registros</h3><div id="recent"><div class="empty">Todavía no hay registros. Añade tu primer peso o entrenamiento.</div></div></div>
+</section>
+<section id="weight" class="section">
+ <h2>Control del peso</h2>
+ <div class="card">
+  <h3>Añadir peso</h3>
+  <label for="weightDate">Fecha</label><input id="weightDate" type="date">
+  <label for="weightValue">Peso (kg)</label><input id="weightValue" type="number" min="30" max="300" step=".1" placeholder="Ej. 87,6">
+  <label for="weightNote">Comentario (opcional)</label><input id="weightNote" placeholder="Ej. En ayunas, después de caminar…">
+  <div class="btnrow"><button id="saveWeight">Guardar peso</button></div>
+ </div>
+ <div class="card"><h3>Evolución del peso</h3><canvas id="weightChart" width="600" height="240"></canvas><p class="muted">La línea representa tus mediciones registradas; las variaciones diarias son normales.</p></div>
+ <div class="card"><h3>Historial</h3><div id="weightList"><div class="empty">Sin mediciones todavía.</div></div></div>
+</section>
+<section id="exercise" class="section">
+ <h2>Registrar ejercicio</h2>
+ <div class="card">
+  <h3>Nuevo entrenamiento</h3>
+  <label for="exerciseDate">Fecha</label><input id="exerciseDate" type="date">
+  <label for="activityType">Actividad</label><select id="activityType"><option>Trail running</option><option>Caminata</option><option>Running</option><option>Calistenia</option><option>Gimnasio</option><option>Natación</option><option>Ciclismo</option><option>Otra</option></select>
+  <div class="grid">
+   <div><label for="duration">Duración (min)</label><input id="duration" type="number" min="1" step="1" placeholder="60"></div>
+   <div><label for="distance">Distancia (km)</label><input id="distance" type="number" min="0" step=".1" placeholder="5,2"></div>
+  </div>
+  <div class="grid">
+   <div><label for="elevation">Desnivel positivo (m)</label><input id="elevation" type="number" min="0" step="1" placeholder="250"></div>
+   <div><label for="effort">Esfuerzo percibido</label><select id="effort"><option value="">Sin indicar</option><option>1 - Muy suave</option><option>2 - Suave</option><option>3 - Moderado</option><option>4 - Intenso</option><option>5 - Muy intenso</option></select></div>
+  </div>
+  <label for="exerciseNotes">Notas</label><textarea id="exerciseNotes" rows="2" placeholder="Sensaciones, recorrido, ejercicios, series…"></textarea>
+  <div class="btnrow"><button id="saveExercise">Guardar entrenamiento</button></div>
+ </div>
+ <div class="card"><h3>Historial de entrenamientos</h3><div id="exerciseList"><div class="empty">Todavía no hay entrenamientos.</div></div></div>
+</section>
+<section id="measure" class="section">
+ <h2>Medidas corporales</h2>
+ <div class="card">
+  <h3>Nueva medición</h3>
+  <label for="measureDate">Fecha</label><input id="measureDate" type="date">
+  <div class="grid">
+   <div><label for="waist">Cintura (cm)</label><input id="waist" type="number" step=".1" placeholder="Ej. 98"></div>
+   <div><label for="abdomen">Abdomen (cm)</label><input id="abdomen" type="number" step=".1" placeholder="Ej. 104"></div>
+  </div>
+  <div class="grid">
+   <div><label for="chest">Pecho (cm)</label><input id="chest" type="number" step=".1"></div>
+   <div><label for="hip">Cadera (cm)</label><input id="hip" type="number" step=".1"></div>
+  </div>
+  <label for="measureNotes">Notas</label><input id="measureNotes" placeholder="Opcional">
+  <div class="btnrow"><button id="saveMeasure">Guardar medidas</button></div>
+ </div>
+ <div class="card"><h3>Historial de medidas</h3><div id="measureList"><div class="empty">Sin medidas todavía.</div></div></div>
+</section>
+<section id="analysis" class="section">
+ <h2>Estadísticas y análisis</h2>
+ <div class="card"><h3>Tu perfil</h3><div class="grid">
+  <div class="stat"><span class="muted">Altura</span><b>178 cm</b></div>
+  <div class="stat"><span class="muted">IMC actual*</span><b id="bmi">27,8</b></div>
+  <div class="stat"><span class="muted">Frecuencia objetivo</span><b>5 días/sem.</b></div>
+  <div class="stat"><span class="muted">Inicio</span><b>16/08/2026</b></div>
+ </div><p class="muted">*IMC orientativo calculado con el último peso registrado. No mide directamente la composición corporal.</p></div>
+ <div class="card"><h3>Balance semanal</h3><p id="weeklyInsight" class="muted">Cuando registres entrenamientos, aquí aparecerá un resumen de tu actividad.</p></div>
+ <div class="card"><h3>Objetivo de peso</h3><p class="muted">Peso inicial: 88 kg · Objetivo: 75 kg · Diferencia: 13 kg.</p><p class="muted">La aplicación muestra tendencias, no prescribe dietas ni ritmos obligatorios de pérdida. Prioriza una evolución sostenible.</p></div>
+</section>
+<section id="settings" class="section">
+ <h2>Perfil y datos</h2>
+ <div class="card"><h3>Tu configuración</h3>
+  <div class="grid"><div class="stat"><span class="muted">Peso inicial</span><b>88 kg</b></div><div class="stat"><span class="muted">Objetivo</span><b>75 kg</b></div><div class="stat"><span class="muted">Altura</span><b>178 cm</b></div><div class="stat"><span class="muted">Entrenamiento</span><b>5 días/sem.</b></div></div>
+  <p class="muted">Prioridad: pérdida de peso y mejora de condición física. Seguimiento desde el 16 de agosto de 2026.</p>
+ </div>
+ <div class="card"><h3>Copia de seguridad</h3><p class="muted">Tus registros se guardan en este dispositivo. Exporta un archivo JSON para conservar una copia o trasladar tus datos.</p>
+  <div class="btnrow"><button id="exportData">Exportar mis datos</button><button class="btn2" id="importButton">Importar copia</button></div><input id="importFile" type="file" accept="application/json" hidden>
+ </div>
+ <div class="card"><h3>Privacidad</h3><p class="muted">La versión inicial no envía tus datos a ningún servidor. Se almacenan localmente en el navegador de este dispositivo. Si borras los datos del navegador o cambias de dispositivo, puedes perderlos si no has exportado una copia.</p></div>
+</section>
+</main>
+<nav class="tabs">
+ <button class="active" data-tab="home"><span>⌂</span>Inicio</button>
+ <button data-tab="weight"><span>⚖</span>Peso</button>
+ <button data-tab="exercise"><span>♧</span>Ejercicio</button>
+ <button data-tab="measure"><span>◉</span>Medidas</button>
+ <button data-tab="analysis"><span>▥</span>Análisis</button>
+ <button data-tab="settings"><span>⚙</span>Más</button>
+</nav>
+<footer>MY FIT EVOLUTION · Versión 1.0</footer>
+<script>
+const PROFILE={initialWeight:88,goalWeight:75,heightCm:178,daysPerWeek:5,startDate:"2026-08-16",priority:"both"};
+const KEY="myFitEvolution_v1";
+let data=JSON.parse(localStorage.getItem(KEY)||'{"weights":[],"exercises":[],"measures":[]}');
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+["weightDate","exerciseDate","measureDate"].forEach(id=>$(id).value=today());
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render();}
+function num(v){return Number(v||0)}
+function fmt(n,d=1){return Number(n).toLocaleString("es-ES",{minimumFractionDigits:d,maximumFractionDigits:d})}
+function sorted(a){return [...a].sort((x,y)=>y.date.localeCompare(x.date))}
+function latestWeight(){return sorted(data.weights)[0]?.value??PROFILE.initialWeight}
+function render(){
+ const w=latestWeight(), lost=PROFILE.initialWeight-w, total=PROFILE.initialWeight-PROFILE.goalWeight;
+ const pct=Math.max(0,Math.min(100,lost/total*100));
+ $("headerWeight").textContent=fmt(w)+" kg";$("headerGoal").textContent=PROFILE.goalWeight+" kg";
+ $("weightChange").textContent=lost>=0?fmt(lost)+" kg desde el inicio":fmt(-lost)+" kg respecto al inicio";
+ $("remaining").textContent=fmt(Math.abs(w-PROFILE.goalWeight))+" kg "+(w>PROFILE.goalWeight?"por recorrer":"por debajo del objetivo");
+ $("lost").textContent=fmt(lost)+" kg";$("progressPct").textContent=fmt(pct,0)+" %";$("progressBar").style.width=pct+"%";
+ $("goalText").textContent=lost>=0?"Has completado "+fmt(pct,0)+" % del recorrido hacia tu objetivo.":"Tu peso está por encima del punto de partida.";
+ $("sessions").textContent=data.exercises.length;
+ $("minutes").textContent=data.exercises.reduce((s,e)=>s+num(e.duration),0)+" min";
+ const cutoff=new Date();cutoff.setDate(cutoff.getDate()-6);const c=cutoff.toISOString().slice(0,10);
+ const week=data.exercises.filter(e=>e.date>=c);
+ $("weekSessions").textContent=week.length;$("weekMinutes").textContent=week.reduce((s,e)=>s+num(e.duration),0)+" min";
+ $("bmi").textContent=fmt(w/Math.pow(PROFILE.heightCm/100,2));
+ $("weeklyInsight").textContent=week.length?`Has registrado ${week.length} entrenamiento(s) y ${week.reduce((s,e)=>s+num(e.duration),0)} minutos en los últimos 7 días. Tu referencia es entrenar 5 días por semana; adapta la carga a tu recuperación.`:"Todavía no hay entrenamientos en los últimos 7 días. Registra tu actividad para empezar a ver tendencias.";
+ const recent=[...data.weights.map(x=>({...x,kind:"Peso",desc:fmt(x.value)+" kg"})),...data.exercises.map(x=>({...x,kind:x.type,desc:(x.duration||0)+" min"+(x.distance?" · "+x.distance+" km":"")}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
+ $("recent").innerHTML=recent.length?recent.map(x=>`<div class="entry"><b>${esc(x.kind)} · ${esc(x.desc)}</b><small>${esc(x.date)}</small></div>`).join(""):'<div class="empty">Todavía no hay registros.</div>';
+ $("weightList").innerHTML=sorted(data.weights).map(x=>`<div class="entry"><b>${fmt(x.value)} kg</b><small>${esc(x.date)}${x.note?" · "+esc(x.note):""}</small></div>`).join("")||'<div class="empty">Sin mediciones todavía.</div>';
+ $("exerciseList").innerHTML=sorted(data.exercises).map(x=>`<div class="entry"><b>${esc(x.type)} · ${x.duration||0} min${x.distance?" · "+x.distance+" km":""}</b><small>${esc(x.date)}${x.elevation?" · +"+x.elevation+" m":""}${x.effort?" · Esfuerzo "+esc(x.effort):""}${x.notes?"<br>"+esc(x.notes):""}</small></div>`).join("")||'<div class="empty">Todavía no hay entrenamientos.</div>';
+ $("measureList").innerHTML=sorted(data.measures).map(x=>`<div class="entry"><b>${esc(x.date)}</b><small>${Object.entries({Cintura:x.waist,Abdomen:x.abdomen,Pecho:x.chest,Cadera:x.hip}).filter(([k,v])=>v).map(([k,v])=>k+": "+v+" cm").join(" · ")}${x.notes?" · "+esc(x.notes):""}</small></div>`).join("")||'<div class="empty">Sin medidas todavía.</div>';
+ drawChart();
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function drawChart(){
+ const c=$("weightChart"),ctx=c.getContext("2d"),W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+ const arr=[...data.weights].sort((a,b)=>a.date.localeCompare(b.date));
+ if(!arr.length){ctx.fillStyle="#71818a";ctx.font="16px sans-serif";ctx.fillText("Añade mediciones para ver tu gráfico",25,115);return}
+ const vals=arr.map(x=>x.value),min=Math.min(...vals,PROFILE.goalWeight)-1,max=Math.max(...vals,PROFILE.initialWeight)+1;
+ const x=i=>35+(arr.length===1?0:i*(W-65)/(arr.length-1)),y=v=>20+(max-v)*(H-55)/(max-min);
+ ctx.strokeStyle="#e2e9ec";ctx.lineWidth=1;for(let i=0;i<4;i++){let yy=20+i*(H-55)/3;ctx.beginPath();ctx.moveTo(30,yy);ctx.lineTo(W-15,yy);ctx.stroke()}
+ ctx.strokeStyle="#267b60";ctx.lineWidth=3;ctx.beginPath();arr.forEach((p,i)=>i?ctx.lineTo(x(i),y(p.value)):ctx.moveTo(x(i),y(p.value)));ctx.stroke();
+ arr.forEach((p,i)=>{ctx.fillStyle="#267b60";ctx.beginPath();ctx.arc(x(i),y(p.value),5,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle="#657780";ctx.font="12px sans-serif";ctx.fillText(fmt(max)+" kg",4,18);ctx.fillText(fmt(min)+" kg",4,H-15);
+}
+$("saveWeight").onclick=()=>{let v=num($("weightValue").value);if(v<30||v>300){alert("Introduce un peso válido.");return}data.weights.push({date:$("weightDate").value||today(),value:v,note:$("weightNote").value.trim()});$("weightValue").value="";$("weightNote").value="";save()};
+$("saveExercise").onclick=()=>{let duration=num($("duration").value);if(duration<=0){alert("Introduce la duración del entrenamiento.");return}data.exercises.push({date:$("exerciseDate").value||today(),type:$("activityType").value,duration,distance:$("distance").value?num($("distance").value):"",elevation:$("elevation").value?num($("elevation").value):"",effort:$("effort").value,notes:$("exerciseNotes").value.trim()});["duration","distance","elevation","exerciseNotes"].forEach(id=>$(id).value="");$("effort").value="";save()};
+$("saveMeasure").onclick=()=>{let fields=["waist","abdomen","chest","hip"];if(!fields.some(id=>$(id).value)){alert("Introduce al menos una medida.");return}let o={date:$("measureDate").value||today(),notes:$("measureNotes").value.trim()};fields.forEach(id=>o[id]=$(id).value?num($(id).value):"");data.measures.push(o);fields.concat(["measureNotes"]).forEach(id=>$(id).value="");save()};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));if(b.dataset.tab==="weight")drawChart()});
+$("exportData").onclick=()=>{const blob=new Blob([JSON.stringify({profile:PROFILE,...data,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="my-fit-evolution-backup.json";a.click();URL.revokeObjectURL(a.href)};
+$("importButton").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{try{const obj=JSON.parse(await e.target.files[0].text());if(!Array.isArray(obj.weights)||!Array.isArray(obj.exercises)||!Array.isArray(obj.measures))throw Error();data={weights:obj.weights,exercises:obj.exercises,measures:obj.measures};save();alert("Copia importada correctamente.");}catch{alert("No se ha podido importar el archivo.");}e.target.value=""};
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+render();
+</script>
+</body></html>
