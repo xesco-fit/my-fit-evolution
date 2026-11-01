@@ -1,22 +1,20 @@
-MY FIT EVOLUTION — versión 2.0
+MY FIT EVOLUTION — versión 3.0
 
-NOVEDADES DE ESTA VERSIÓN:
-- Perfil actualizado: 105 kg de peso inicial, 75 kg de objetivo, 178 cm y 5 días/semana.
-- Se incorporan automáticamente los 10 registros históricos facilitados, desde el 16/08/2026 hasta el 25/10/2026.
-- Se elimina el apartado «Medidas».
-- El IMC se calcula automáticamente para cada registro de peso.
-- Nueva gráfica e historial de evolución del IMC, con clasificación orientativa.
-- El registro de peso y de entrenamientos permite introducir fechas pasadas.
-- Se conservan los datos que ya existieran en el almacenamiento local de la versión anterior.
-- Exportación e importación de copias JSON.
+NOVEDADES:
+- Permite editar cualquier registro de peso: fecha, valor y comentario.
+- Permite eliminar registros de peso con una confirmación previa.
+- Al editar o eliminar un peso, se actualizan automáticamente el resumen, las gráficas y el IMC.
+- Los registros históricos iniciales se incorporan una sola vez; si eliminas uno, no volverá a añadirse automáticamente al reiniciar.
+- Mantiene las funciones de la versión 2.0: evolución del peso e IMC, registro histórico de entrenamientos, análisis y copias de seguridad.
 
-PARA INSTALAR / ACTUALIZAR EN IPHONE:
-La aplicación PWA debe estar alojada en un sitio HTTPS.
+ACTUALIZAR EN GITHUB PAGES:
 1. Descomprime este ZIP.
-2. Sustituye en tu repositorio de GitHub Pages los archivos index.html, manifest.json y sw.js por los de la carpeta my_fit_evolution. Puedes conservar también LEEME.txt.
-3. Espera a que GitHub Pages publique los cambios.
-4. Abre la dirección de tu aplicación en Safari en el iPhone y recarga la página. Si sigue apareciendo la versión antigua, cierra la aplicación y vuelve a abrirla; el nuevo service worker actualizará la caché.
-5. No elimines los datos del navegador ni desinstales la aplicación antes de comprobar que la nueva versión muestra tus registros.
+2. En el repositorio my-fit-evolution, sustituye index.html, manifest.json y sw.js por los archivos de la carpeta my_fit_evolution.
+3. Guarda los cambios con Commit changes y espera a que GitHub Pages publique la actualización.
+4. Abre la aplicación en Safari y recarga. Si ves la versión anterior, cierra la PWA y vuelve a abrirla para que el nuevo service worker actualice la caché.
+5. No borres los datos del navegador ni desinstales la aplicación.
 
-DATOS Y PRIVACIDAD:
-Los datos se guardan localmente en el navegador/dispositivo. Esta versión no sincroniza datos entre dispositivos ni integra Apple Health. Exporta periódicamente una copia JSON desde «Más» para conservar tus registros.
+IMPORTANTE:
+- Se conserva la misma clave de almacenamiento local que en versiones anteriores; tus pesos y entrenamientos existentes no se borran.
+- Antes de hacer cambios importantes, puedes exportar una copia JSON desde Más > Exportar mis datos.
+- Los datos siguen guardándose localmente en el dispositivo; no se sincronizan automáticamente entre dispositivos.
