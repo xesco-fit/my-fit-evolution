@@ -84,39 +84,30 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:10px}
  </div>
  <div class="card"><h3>Historial de entrenamientos</h3><div id="exerciseList"><div class="empty">Todavía no hay entrenamientos.</div></div></div>
 </section>
-<section id="measure" class="section">
- <h2>Medidas corporales</h2>
- <div class="card">
-  <h3>Nueva medición</h3>
-  <label for="measureDate">Fecha</label><input id="measureDate" type="date">
-  <div class="grid">
-   <div><label for="waist">Cintura (cm)</label><input id="waist" type="number" step=".1" placeholder="Ej. 98"></div>
-   <div><label for="abdomen">Abdomen (cm)</label><input id="abdomen" type="number" step=".1" placeholder="Ej. 104"></div>
-  </div>
-  <div class="grid">
-   <div><label for="chest">Pecho (cm)</label><input id="chest" type="number" step=".1"></div>
-   <div><label for="hip">Cadera (cm)</label><input id="hip" type="number" step=".1"></div>
-  </div>
-  <label for="measureNotes">Notas</label><input id="measureNotes" placeholder="Opcional">
-  <div class="btnrow"><button id="saveMeasure">Guardar medidas</button></div>
- </div>
- <div class="card"><h3>Historial de medidas</h3><div id="measureList"><div class="empty">Sin medidas todavía.</div></div></div>
-</section>
+
 <section id="analysis" class="section">
  <h2>Estadísticas y análisis</h2>
  <div class="card"><h3>Tu perfil</h3><div class="grid">
   <div class="stat"><span class="muted">Altura</span><b>178 cm</b></div>
-  <div class="stat"><span class="muted">IMC actual*</span><b id="bmi">27,8</b></div>
+  <div class="stat"><span class="muted">Último IMC</span><b id="bmi">27,7</b></div>
   <div class="stat"><span class="muted">Frecuencia objetivo</span><b>5 días/sem.</b></div>
-  <div class="stat"><span class="muted">Inicio</span><b>16/08/2026</b></div>
- </div><p class="muted">*IMC orientativo calculado con el último peso registrado. No mide directamente la composición corporal.</p></div>
+  <div class="stat"><span class="muted">Inicio del seguimiento</span><b>16/08/2026</b></div>
+ </div><p class="muted">El IMC se calcula automáticamente con cada peso y tu altura. Es una referencia orientativa y no mide directamente la composición corporal.</p></div>
+ <div class="card"><h3>Evolución del IMC</h3><div class="grid">
+  <div class="stat"><span class="muted">IMC inicial</span><b id="bmiInitial">33,1</b></div>
+  <div class="stat"><span class="muted">Último IMC</span><b id="bmiCurrent">27,7</b></div>
+  <div class="stat"><span class="muted">IMC objetivo (75 kg)</span><b id="bmiGoal">23,7</b></div>
+  <div class="stat"><span class="muted">Variación desde el inicio</span><b id="bmiChange">−5,4</b></div>
+ </div><canvas id="bmiChart" width="600" height="240"></canvas><p class="muted">Cada punto corresponde a una medición real de peso. Las líneas unen únicamente los registros disponibles.</p></div>
+ <div class="card"><h3>Referencias orientativas del IMC en adultos</h3><div class="entry">Menos de 18,5 · Bajo peso</div><div class="entry">18,5–24,9 · Normopeso</div><div class="entry">25,0–29,9 · Sobrepeso</div><div class="entry">30,0–34,9 · Obesidad clase I</div><div class="entry">35,0–39,9 · Obesidad clase II</div><div class="entry">40 o más · Obesidad clase III</div><p class="muted">Estas categorías son referencias poblacionales; la interpretación individual requiere contexto clínico.</p></div>
+ <div class="card"><h3>Historial de IMC</h3><div id="bmiList"><div class="empty">Sin mediciones todavía.</div></div></div>
  <div class="card"><h3>Balance semanal</h3><p id="weeklyInsight" class="muted">Cuando registres entrenamientos, aquí aparecerá un resumen de tu actividad.</p></div>
- <div class="card"><h3>Objetivo de peso</h3><p class="muted">Peso inicial: 88 kg · Objetivo: 75 kg · Diferencia: 13 kg.</p><p class="muted">La aplicación muestra tendencias, no prescribe dietas ni ritmos obligatorios de pérdida. Prioriza una evolución sostenible.</p></div>
+ <div class="card"><h3>Objetivo de peso</h3><p class="muted">Peso inicial: 105 kg · Objetivo: 75 kg · Diferencia: 30 kg.</p><p class="muted">La aplicación muestra tendencias, no prescribe dietas ni ritmos obligatorios de pérdida. Prioriza una evolución sostenible.</p></div>
 </section>
 <section id="settings" class="section">
  <h2>Perfil y datos</h2>
  <div class="card"><h3>Tu configuración</h3>
-  <div class="grid"><div class="stat"><span class="muted">Peso inicial</span><b>88 kg</b></div><div class="stat"><span class="muted">Objetivo</span><b>75 kg</b></div><div class="stat"><span class="muted">Altura</span><b>178 cm</b></div><div class="stat"><span class="muted">Entrenamiento</span><b>5 días/sem.</b></div></div>
+  <div class="grid"><div class="stat"><span class="muted">Peso inicial</span><b>105 kg</b></div><div class="stat"><span class="muted">Objetivo</span><b>75 kg</b></div><div class="stat"><span class="muted">Altura</span><b>178 cm</b></div><div class="stat"><span class="muted">Entrenamiento</span><b>5 días/sem.</b></div></div>
   <p class="muted">Prioridad: pérdida de peso y mejora de condición física. Seguimiento desde el 16 de agosto de 2026.</p>
  </div>
  <div class="card"><h3>Copia de seguridad</h3><p class="muted">Tus registros se guardan en este dispositivo. Exporta un archivo JSON para conservar una copia o trasladar tus datos.</p>
@@ -129,18 +120,35 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:10px}
  <button class="active" data-tab="home"><span>⌂</span>Inicio</button>
  <button data-tab="weight"><span>⚖</span>Peso</button>
  <button data-tab="exercise"><span>♧</span>Ejercicio</button>
- <button data-tab="measure"><span>◉</span>Medidas</button>
  <button data-tab="analysis"><span>▥</span>Análisis</button>
  <button data-tab="settings"><span>⚙</span>Más</button>
 </nav>
-<footer>MY FIT EVOLUTION · Versión 1.0</footer>
+<footer>MY FIT EVOLUTION · Versión 2.0</footer>
 <script>
-const PROFILE={initialWeight:88,goalWeight:75,heightCm:178,daysPerWeek:5,startDate:"2026-08-16",priority:"both"};
+const PROFILE={initialWeight:105,goalWeight:75,heightCm:178,daysPerWeek:5,startDate:"2026-08-16",priority:"both"};
 const KEY="myFitEvolution_v1";
-let data=JSON.parse(localStorage.getItem(KEY)||'{"weights":[],"exercises":[],"measures":[]}');
+let data;
+try{data=JSON.parse(localStorage.getItem(KEY)||'{"weights":[],"exercises":[],"measures":[]}')}catch{data={weights:[],exercises:[],measures:[]}}
+data.weights=Array.isArray(data.weights)?data.weights:[];
+data.exercises=Array.isArray(data.exercises)?data.exercises:[];
+data.measures=Array.isArray(data.measures)?data.measures:[]; // conserva cualquier dato antiguo, aunque Medidas ya no se muestra
+const historicalWeights=[
+ {date:"2026-08-16",value:105.0,note:"Peso inicial"},
+ {date:"2026-08-30",value:102.5,note:"Registro histórico"},
+ {date:"2026-09-06",value:99.3,note:"Registro histórico"},
+ {date:"2026-09-13",value:98.0,note:"Registro histórico"},
+ {date:"2026-09-20",value:95.3,note:"Registro histórico"},
+ {date:"2026-09-27",value:94.1,note:"Registro histórico"},
+ {date:"2026-10-04",value:92.5,note:"Registro histórico"},
+ {date:"2026-10-11",value:90.0,note:"Registro histórico"},
+ {date:"2026-10-18",value:88.9,note:"Registro histórico"},
+ {date:"2026-10-25",value:87.7,note:"Registro histórico"}
+];
+// Añade las mediciones facilitadas por el usuario sin duplicar ni sobrescribir fechas ya registradas.
+historicalWeights.forEach(h=>{if(!data.weights.some(w=>w.date===h.date))data.weights.push(h)});
 const $=id=>document.getElementById(id);
 const today=()=>new Date().toISOString().slice(0,10);
-["weightDate","exerciseDate","measureDate"].forEach(id=>$(id).value=today());
+["weightDate","exerciseDate"].forEach(id=>$(id).value=today());
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render();}
 function num(v){return Number(v||0)}
 function fmt(n,d=1){return Number(n).toLocaleString("es-ES",{minimumFractionDigits:d,maximumFractionDigits:d})}
@@ -163,10 +171,12 @@ function render(){
  $("weeklyInsight").textContent=week.length?`Has registrado ${week.length} entrenamiento(s) y ${week.reduce((s,e)=>s+num(e.duration),0)} minutos en los últimos 7 días. Tu referencia es entrenar 5 días por semana; adapta la carga a tu recuperación.`:"Todavía no hay entrenamientos en los últimos 7 días. Registra tu actividad para empezar a ver tendencias.";
  const recent=[...data.weights.map(x=>({...x,kind:"Peso",desc:fmt(x.value)+" kg"})),...data.exercises.map(x=>({...x,kind:x.type,desc:(x.duration||0)+" min"+(x.distance?" · "+x.distance+" km":"")}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
  $("recent").innerHTML=recent.length?recent.map(x=>`<div class="entry"><b>${esc(x.kind)} · ${esc(x.desc)}</b><small>${esc(x.date)}</small></div>`).join(""):'<div class="empty">Todavía no hay registros.</div>';
- $("weightList").innerHTML=sorted(data.weights).map(x=>`<div class="entry"><b>${fmt(x.value)} kg</b><small>${esc(x.date)}${x.note?" · "+esc(x.note):""}</small></div>`).join("")||'<div class="empty">Sin mediciones todavía.</div>';
+ $("weightList").innerHTML=sorted(data.weights).map(x=>`<div class="entry"><b>${fmt(x.value)} kg · IMC ${fmt(x.value/Math.pow(PROFILE.heightCm/100,2))}</b><small>${esc(x.date)}${x.note?" · "+esc(x.note):""}</small></div>`).join("")||'<div class="empty">Sin mediciones todavía.</div>';
+ const initialBmi=PROFILE.initialWeight/Math.pow(PROFILE.heightCm/100,2),currentBmi=w/Math.pow(PROFILE.heightCm/100,2),goalBmi=PROFILE.goalWeight/Math.pow(PROFILE.heightCm/100,2);
+ $("bmiInitial").textContent=fmt(initialBmi);$("bmiCurrent").textContent=fmt(currentBmi);$("bmiGoal").textContent=fmt(goalBmi);$("bmiChange").textContent=(currentBmi-initialBmi<0?"−":"+")+fmt(Math.abs(currentBmi-initialBmi));
+ $("bmiList").innerHTML=sorted(data.weights).map(x=>{const b=x.value/Math.pow(PROFILE.heightCm/100,2);return `<div class="entry"><b>${fmt(b)} · ${bmiCategory(b)}</b><small>${esc(x.date)} · ${fmt(x.value)} kg</small></div>`}).join("")||'<div class="empty">Sin mediciones todavía.</div>';
  $("exerciseList").innerHTML=sorted(data.exercises).map(x=>`<div class="entry"><b>${esc(x.type)} · ${x.duration||0} min${x.distance?" · "+x.distance+" km":""}</b><small>${esc(x.date)}${x.elevation?" · +"+x.elevation+" m":""}${x.effort?" · Esfuerzo "+esc(x.effort):""}${x.notes?"<br>"+esc(x.notes):""}</small></div>`).join("")||'<div class="empty">Todavía no hay entrenamientos.</div>';
- $("measureList").innerHTML=sorted(data.measures).map(x=>`<div class="entry"><b>${esc(x.date)}</b><small>${Object.entries({Cintura:x.waist,Abdomen:x.abdomen,Pecho:x.chest,Cadera:x.hip}).filter(([k,v])=>v).map(([k,v])=>k+": "+v+" cm").join(" · ")}${x.notes?" · "+esc(x.notes):""}</small></div>`).join("")||'<div class="empty">Sin medidas todavía.</div>';
- drawChart();
+ drawChart();drawBmiChart();
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function drawChart(){
@@ -180,13 +190,26 @@ function drawChart(){
  arr.forEach((p,i)=>{ctx.fillStyle="#267b60";ctx.beginPath();ctx.arc(x(i),y(p.value),5,0,Math.PI*2);ctx.fill()});
  ctx.fillStyle="#657780";ctx.font="12px sans-serif";ctx.fillText(fmt(max)+" kg",4,18);ctx.fillText(fmt(min)+" kg",4,H-15);
 }
+function bmiCategory(v){if(v<18.5)return "Bajo peso";if(v<25)return "Normopeso";if(v<30)return "Sobrepeso";if(v<35)return "Obesidad clase I";if(v<40)return "Obesidad clase II";return "Obesidad clase III"}
+function drawBmiChart(){
+ const c=$("bmiChart");if(!c)return;const ctx=c.getContext("2d"),W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+ const arr=[...data.weights].sort((a,b)=>a.date.localeCompare(b.date)).map(p=>({...p,bmi:p.value/Math.pow(PROFILE.heightCm/100,2)}));
+ if(!arr.length){ctx.fillStyle="#71818a";ctx.font="16px sans-serif";ctx.fillText("Añade mediciones para ver tu gráfico",25,115);return}
+ const vals=arr.map(x=>x.bmi),goal=PROFILE.goalWeight/Math.pow(PROFILE.heightCm/100,2),min=Math.max(15,Math.floor(Math.min(...vals,goal)-1)),max=Math.ceil(Math.max(...vals)+1);
+ const x=i=>35+(arr.length===1?0:i*(W-65)/(arr.length-1)),y=v=>20+(max-v)*(H-55)/(max-min);
+ ctx.strokeStyle="#e2e9ec";ctx.lineWidth=1;for(let i=0;i<4;i++){let yy=20+i*(H-55)/3;ctx.beginPath();ctx.moveTo(30,yy);ctx.lineTo(W-15,yy);ctx.stroke()}
+ // Referencia de IMC 25
+ if(25>=min&&25<=max){ctx.setLineDash([5,5]);ctx.strokeStyle="#d39b42";ctx.beginPath();ctx.moveTo(30,y(25));ctx.lineTo(W-15,y(25));ctx.stroke();ctx.setLineDash([])}
+ ctx.strokeStyle="#267b60";ctx.lineWidth=3;ctx.beginPath();arr.forEach((p,i)=>i?ctx.lineTo(x(i),y(p.bmi)):ctx.moveTo(x(i),y(p.bmi)));ctx.stroke();
+ arr.forEach((p,i)=>{ctx.fillStyle="#267b60";ctx.beginPath();ctx.arc(x(i),y(p.bmi),5,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle="#657780";ctx.font="12px sans-serif";ctx.fillText(fmt(max),4,18);ctx.fillText(fmt(min),4,H-15);ctx.fillText("25",W-30,y(25)-5);
+}
 $("saveWeight").onclick=()=>{let v=num($("weightValue").value);if(v<30||v>300){alert("Introduce un peso válido.");return}data.weights.push({date:$("weightDate").value||today(),value:v,note:$("weightNote").value.trim()});$("weightValue").value="";$("weightNote").value="";save()};
 $("saveExercise").onclick=()=>{let duration=num($("duration").value);if(duration<=0){alert("Introduce la duración del entrenamiento.");return}data.exercises.push({date:$("exerciseDate").value||today(),type:$("activityType").value,duration,distance:$("distance").value?num($("distance").value):"",elevation:$("elevation").value?num($("elevation").value):"",effort:$("effort").value,notes:$("exerciseNotes").value.trim()});["duration","distance","elevation","exerciseNotes"].forEach(id=>$(id).value="");$("effort").value="";save()};
-$("saveMeasure").onclick=()=>{let fields=["waist","abdomen","chest","hip"];if(!fields.some(id=>$(id).value)){alert("Introduce al menos una medida.");return}let o={date:$("measureDate").value||today(),notes:$("measureNotes").value.trim()};fields.forEach(id=>o[id]=$(id).value?num($(id).value):"");data.measures.push(o);fields.concat(["measureNotes"]).forEach(id=>$(id).value="");save()};
-document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));if(b.dataset.tab==="weight")drawChart()});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));if(b.dataset.tab==="weight")drawChart();if(b.dataset.tab==="analysis")drawBmiChart()});
 $("exportData").onclick=()=>{const blob=new Blob([JSON.stringify({profile:PROFILE,...data,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="my-fit-evolution-backup.json";a.click();URL.revokeObjectURL(a.href)};
 $("importButton").onclick=()=>$("importFile").click();
-$("importFile").onchange=async e=>{try{const obj=JSON.parse(await e.target.files[0].text());if(!Array.isArray(obj.weights)||!Array.isArray(obj.exercises)||!Array.isArray(obj.measures))throw Error();data={weights:obj.weights,exercises:obj.exercises,measures:obj.measures};save();alert("Copia importada correctamente.");}catch{alert("No se ha podido importar el archivo.");}e.target.value=""};
+$("importFile").onchange=async e=>{try{const obj=JSON.parse(await e.target.files[0].text());if(!Array.isArray(obj.weights)||!Array.isArray(obj.exercises))throw Error();data={weights:obj.weights,exercises:obj.exercises,measures:Array.isArray(obj.measures)?obj.measures:[]};save();alert("Copia importada correctamente.");}catch{alert("No se ha podido importar el archivo.");}e.target.value=""};
 if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
 render();
 </script>

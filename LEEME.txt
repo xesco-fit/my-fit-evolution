@@ -1,22 +1,22 @@
-MY FIT EVOLUTION — versión 1.0
+MY FIT EVOLUTION — versión 2.0
 
-Incluye:
-- Perfil configurado: 88 kg iniciales, 75 kg objetivo, 178 cm, 5 días/semana.
-- Registro de peso y gráfico.
-- Registro de entrenamientos (trail, caminata, running, calistenia, gimnasio, natación, ciclismo y otros).
-- Registro de cintura, abdomen, pecho y cadera.
-- Resumen semanal, historial y análisis básico.
-- Exportación e importación de copia JSON.
-- Almacenamiento local en el navegador.
+NOVEDADES DE ESTA VERSIÓN:
+- Perfil actualizado: 105 kg de peso inicial, 75 kg de objetivo, 178 cm y 5 días/semana.
+- Se incorporan automáticamente los 10 registros históricos facilitados, desde el 16/08/2026 hasta el 25/10/2026.
+- Se elimina el apartado «Medidas».
+- El IMC se calcula automáticamente para cada registro de peso.
+- Nueva gráfica e historial de evolución del IMC, con clasificación orientativa.
+- El registro de peso y de entrenamientos permite introducir fechas pasadas.
+- Se conservan los datos que ya existieran en el almacenamiento local de la versión anterior.
+- Exportación e importación de copias JSON.
 
-PARA PROBAR:
-Abre index.html en un navegador moderno.
+PARA INSTALAR / ACTUALIZAR EN IPHONE:
+La aplicación PWA debe estar alojada en un sitio HTTPS.
+1. Descomprime este ZIP.
+2. Sustituye en tu repositorio de GitHub Pages los archivos index.html, manifest.json y sw.js por los de la carpeta my_fit_evolution. Puedes conservar también LEEME.txt.
+3. Espera a que GitHub Pages publique los cambios.
+4. Abre la dirección de tu aplicación en Safari en el iPhone y recarga la página. Si sigue apareciendo la versión antigua, cierra la aplicación y vuelve a abrirla; el nuevo service worker actualizará la caché.
+5. No elimines los datos del navegador ni desinstales la aplicación antes de comprobar que la nueva versión muestra tus registros.
 
-PARA INSTALAR EN IPHONE:
-La instalación PWA requiere alojar esta carpeta en un sitio HTTPS.
-1. Publica los archivos en un hosting estático HTTPS (por ejemplo, un repositorio Pages).
-2. Abre la URL en Safari en el iPhone.
-3. Pulsa Compartir > Añadir a pantalla de inicio.
-
-IMPORTANTE:
-Los datos se guardan en el almacenamiento local del navegador/dispositivo. Exporta periódicamente una copia JSON. La primera versión no sincroniza datos entre dispositivos y no integra Apple Health.
+DATOS Y PRIVACIDAD:
+Los datos se guardan localmente en el navegador/dispositivo. Esta versión no sincroniza datos entre dispositivos ni integra Apple Health. Exporta periódicamente una copia JSON desde «Más» para conservar tus registros.
